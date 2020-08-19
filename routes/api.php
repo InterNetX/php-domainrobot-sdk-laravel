@@ -47,3 +47,14 @@ Route::post('certificate/_prepareOrder', 'ApiCertificate@prepareOrder');
 Route::get('certificate/{id}', 'ApiCertificate@info');
 Route::delete('certificate/{id}', 'ApiCertificate@delete');
 Route::post('certificate/_search', 'ApiCertificate@list');
+
+Route::post('estimate', 'ApiPcDomains@estimate');
+Route::get('alexa/{domain}', 'ApiPcDomains@alexa');
+Route::get('exchangerate/{source}/{target}', 'ApiPcDomains@exchangerate');
+Route::get('domainstudio/{keyword}', 'ApiPcDomains@domainstudio');
+Route::post('keyword', 'ApiPcDomains@keyword');
+Route::get('meta/{domain}', 'ApiPcDomains@meta');
+Route::get('sistrix/{domain}/{country}', 'ApiPcDomains@sistrix');
+Route::post('majestic', 'ApiPcDomains@majestic');
+Route::get('smu_check/{username}', 'ApiPcDomains@smuCheck');
+Route::get('wayback/{domain}', 'ApiPcDomains@wayback');

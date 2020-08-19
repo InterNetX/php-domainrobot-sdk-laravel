@@ -2,7 +2,7 @@
 
 ## Preamble
 
-This is an example implementation of the PHP-Domainrobot-SDk by [InterNetX GmbH](https://interentx.com).
+This is an example implementation of the PHP-Domainrobot-SDK by [InterNetX GmbH](https://interentx.com).
 
 Find the documentation to the API and the SDK here:
 
@@ -18,13 +18,13 @@ This implementation has been built using the [Laravel](https://laravel.com) Fram
 * PHP >=7.3
 * and all [Laravel Requirements](https://laravel.com/docs/master/installation)
 * Additionally the PHP Module **php-curl** needs to be installed
-* [composer](https://getcomposer.org/)(PHP Dependency Manager)
-* **Optional, only necessary if you want to crea a UI**: [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+* [composer](https://getcomposer.org/) (PHP Dependency Manager)
+* **Optional, only necessary if you want to create a UI**: [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 * [GIT](https://git-scm.com/) installed on the System (if you want to clone directly from this repository)
 
 ### Setup the Project
 
-Clone the Source Code from the Repository using your favourite git client (e.g. [sourctree](https://www.sourcetreeapp.com/))
+Clone the Source Code from the Repository using your favourite git client (e.g. [sourcetree](https://www.sourcetreeapp.com/))
 > git clone https://github.com/InterNetX/php-domainrobot-sdk-laravel.git
 
 or alternatively you can download the example implementation as a zip file here: [https://github.com/InterNetX/php-domainrobot-sdk-laravel/archive/master.zip](https://github.com/InterNetX/php-domainrobot-sdk-laravel/archive/master.zip)
@@ -50,9 +50,9 @@ In the .env file locate the following section and set your AutoDNS Authenticatio
 ##
 #####################################
 
-DOMAINROBOT_URL=# DOMAINROBOT_URL: Demo: https://api.demo.autodns.com/v1, Live: https://api.autodns.com/v1
-DOMAINROBOT_USER=# AutoDNS API User
-DOMAINROBOT_PASSWORD=# AutoDNS API Password
+DOMAINROBOT_URL= # DOMAINROBOT_URL: Demo: https://api.demo.autodns.com/v1, Live: https://api.autodns.com/v1
+DOMAINROBOT_USER= # AutoDNS API User
+DOMAINROBOT_PASSWORD= # AutoDNS API Password
 DOMAINROBOT_CONTEXT=4 # only change this if you have a Personal AutoDNS Account
 
 #################
@@ -61,8 +61,8 @@ DOMAINROBOT_CONTEXT=4 # only change this if you have a Personal AutoDNS Account
 ## the SSLManager API
 ##
 #################
-DOMAINROBOT_SSL_USER=# SSLManager User if available
-DOMAINROBOT_SSL_PASSWORD=# SSLManager Password if available
+DOMAINROBOT_SSL_USER= # SSLManager User if available
+DOMAINROBOT_SSL_PASSWORD= # SSLManager Password if available
 DOMAINROBOT_SSL_CONTEXT=9 # only change this if you have a Personal SSLManager Account
 ```
 
