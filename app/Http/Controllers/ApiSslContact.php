@@ -69,7 +69,7 @@ class ApiSslContact extends Controller
             // Domainrobot\Model\SslContact
             $newSslContact = $domainrobot->sslContact->create($sslContact);
 
-        } catch ( DomainrobotException $exceptio ) {
+        } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()

@@ -6,14 +6,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Requests\ApiPcDomainsEstimateRequest;
 use App\Http\Requests\ApiPcDomainsKeywordRequest;
-use Domainrobot\Lib\DomainrobotAuth;
 use Domainrobot\Lib\DomainrobotException;
-use Domainrobot\Lib\DomainrobotHeaders;
 use Domainrobot\Model\Estimation;
 use Domainrobot\Model\Keywords;
 use Domainrobot\Model\Domains;
-use stdClass;
-
 class ApiPcDomains extends Controller
 {
     /*
@@ -23,7 +19,7 @@ class ApiPcDomains extends Controller
     {
       "domains": [
 	    "internetx.com",
-		"example.de"
+		"example.com"
 	  ],
       "currency": "EUR"
     }
@@ -38,7 +34,7 @@ class ApiPcDomains extends Controller
      */
     public function estimate(ApiPcDomainsEstimateRequest $request)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
 
@@ -47,7 +43,7 @@ class ApiPcDomains extends Controller
             $estimation->setDomains($request->domains);
             $estimation->setCurrency($request->currency);
 
-            $domainrobot->pcDomains->estimation($estimation);
+            $estimationObjects = $domainrobot->pcDomains->estimation($estimation);
 
         } catch ( DomainrobotException $exception ) {
             return response()->json(
@@ -55,7 +51,7 @@ class ApiPcDomains extends Controller
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
@@ -77,92 +73,17 @@ class ApiPcDomains extends Controller
      */
     public function alexa($domain)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
-
-            $domainrobot->pcDomains->alexa($domain);
-
+            $alexaSiteInfoObject = $domainrobot->pcDomains->alexa($domain);
         } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()
             );
         }
-        
-        return response()->json(
-            $domainrobot::getLastDomainrobotResult()->getResult(),
-            $domainrobot::getLastDomainrobotResult()->getStatusCode()
-        );
-    }
 
-    /*
-    Exchangerate Example Request
-
-    GET /api/exchangerate/{source}/{target}
-    */
-
-    /**
-     * Sends an Exchangerate Request
-     *
-     * @param string $sourceCurrency
-     * @param string $targetCurrency
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function exchangerate($sourceCurrency, $targetCurrency)
-    {
-        $domainrobot = app('Domainrobot');
-
-        Log::debug($sourceCurrency);
-        Log::debug($targetCurrency);
-
-        Log::debug($domainrobot->getDomainrobotConfig()->getUrl() . "/v1/exchangerate/$sourceCurrency/$targetCurrency");
-
-        try {
-
-            $domainrobot->pcDomains->exchangerate($sourceCurrency, $targetCurrency);
-
-        } catch ( DomainrobotException $exception ) {
-            return response()->json(
-                $exception->getError(),
-                $exception->getStatusCode()
-            );
-        }
-        
-        return response()->json(
-            $domainrobot::getLastDomainrobotResult()->getResult(),
-            $domainrobot::getLastDomainrobotResult()->getStatusCode()
-        );
-    }
-
-    /*
-    DomainStudio Example Request
-
-    GET /api/domainstudio/{keyword}
-    */
-
-    /**
-     * Sends an DomainStudio Request
-     * Get a list of domain name suggestions
-     *
-     * @param string $keyword
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function domainstudio($keyword)
-    {
-        $domainrobot = app('Domainrobot');
-
-        try {
-
-            $domainrobot->pcDomains->domainstudio($keyword);
-
-        } catch ( DomainrobotException $exception ) {
-            return response()->json(
-                $exception->getError(),
-                $exception->getStatusCode()
-            );
-        }
-        
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
@@ -190,15 +111,14 @@ class ApiPcDomains extends Controller
      */
     public function keyword(ApiPcDomainsKeywordRequest $request)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
 
             $keywords = new Keywords();
             $keywords->setKeywords($request->keywords);
 
-            $domainrobot->pcDomains->keyword($keywords);
-
+            $keywordObjects = $domainrobot->pcDomains->keyword($keywords);
 
         } catch ( DomainrobotException $exception ) {
             return response()->json(
@@ -206,7 +126,7 @@ class ApiPcDomains extends Controller
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
@@ -228,19 +148,17 @@ class ApiPcDomains extends Controller
      */
     public function meta($domain)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
-
-            $domainrobot->pcDomains->meta($domain);
-
+            $metaObject = $domainrobot->pcDomains->meta($domain);
         } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
@@ -262,19 +180,17 @@ class ApiPcDomains extends Controller
      */
     public function sistrix($domain, $country)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
-
-            $domainrobot->pcDomains->sistrix($domain, $country);
-
+            $sistrixObject = $domainrobot->pcDomains->sistrix($domain, $country);
         } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
@@ -300,14 +216,14 @@ class ApiPcDomains extends Controller
      */
     public function majestic(Request $request)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
 
             $domains = new Domains();
             $domains->setDomains($request->domains);
 
-            $domainrobot->pcDomains->majestic($domains);
+            $majesticObjects = $domainrobot->pcDomains->majestic($domains);
 
         } catch ( DomainrobotException $exception ) {
             return response()->json(
@@ -315,7 +231,7 @@ class ApiPcDomains extends Controller
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
@@ -337,12 +253,10 @@ class ApiPcDomains extends Controller
      */
     public function smuCheck($username)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
-
-            $domainrobot->pcDomains->smuCheck($username);
-
+            $socialMediaObject = $domainrobot->pcDomains->smuCheck($username);
         } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
@@ -364,26 +278,24 @@ class ApiPcDomains extends Controller
 
     /**
      * Sends an Wayback Request
-     * Retrieve Info rom Wayback Snapshot Archive
+     * Retrieve Info from Wayback Snapshot Archive
      * 
      * @param string $username
      * @return \Illuminate\Http\JsonResponse
      */
     public function wayback($domain)
     {
-        $domainrobot = app('Domainrobot');
+        $domainrobot = app('DomainrobotPcDomains');
 
         try {
-
-            $domainrobot->pcDomains->wayback($domain);
-
+            $waybackObject = $domainrobot->pcDomains->wayback($domain);
         } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()

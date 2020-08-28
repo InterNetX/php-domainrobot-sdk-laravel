@@ -48,6 +48,18 @@ class AppServiceProvider extends ServiceProvider
                 );
             }
         );
+
+        $this->app->bind(
+            'DomainrobotPcDomains',
+            function ($app) {
+                return $this->getDomainrobot(
+                    env('DOMAINROBOT_URL') . env('DOMAINROBOT_URL_PCDOMAINS_SUFFIX'),
+                    env('DOMAINROBOT_USER'),
+                    env('DOMAINROBOT_PASSWORD'),
+                    env('DOMAINROBOT_CONTEXT')
+                );
+            }
+        );
     }
 
     /**

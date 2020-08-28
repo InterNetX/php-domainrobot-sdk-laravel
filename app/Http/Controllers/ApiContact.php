@@ -334,7 +334,7 @@ class ApiContact extends Controller
                     'limit' => 10
                 ])
             ]);
-
+            
             $list = $domainrobot->contact->list($query);
 
         } catch ( DomainrobotException $exception ) {
