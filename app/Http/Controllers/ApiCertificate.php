@@ -83,9 +83,9 @@ class ApiCertificate extends Controller
     }
 
     /*
-    Create Example Request
+    Create Realtime Example Request
 
-    POST /api/certificate
+    POST /api/certificate/_realtime
     {
       "name": "domainname.com",
       "sslcontact_id": "2112"
@@ -145,9 +145,9 @@ class ApiCertificate extends Controller
     }
 
     /*
-    Create Example Request
+    Prepare Order Example Request
 
-    POST /api/certificate
+    POST /api/certificate/_prepareOrder
     {
       "name": "domainname.com"
     }
@@ -174,7 +174,7 @@ class ApiCertificate extends Controller
 
             $csr = $csrUtility->generateCsr($request->name);
 
-            $certificateData->setPlain(trim($csr));
+            $certificateData->setPlain($csr);
 
             // Domainrobot\Model\CertificateData
             $newCertificateData = $domainrobot->certificate->prepareOrder($certificateData);
@@ -255,6 +255,21 @@ class ApiCertificate extends Controller
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
         );
     }
+
+    /*
+    List Example Request
+
+    POST /api/certificate/_search
+    {
+      "filters": [
+        {
+          "key": "name",
+          "value": "%domain%",
+          "operator": "LIKE"
+        }
+      ]  
+    }
+    */
 
     /**
      * List Certificates

@@ -2,7 +2,7 @@
 
 ## Preamble
 
-This is an example implementation of the PHP-Domainrobot-SDK by [InterNetX GmbH](https://interentx.com).
+This is an example implementation of the PHP-Domainrobot-SDK by [InterNetX GmbH](https://internetx.com).
 
 Find the documentation to the API and the SDK here:
 

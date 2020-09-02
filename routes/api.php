@@ -29,7 +29,7 @@ Route::delete('domain/{name}/_authinfo1', 'ApiDomain@deleteAuthinfo1');
 Route::post('domain/{name}/_authinfo2', 'ApiDomain@createAuthinfo2');
 Route::put('domain/{name}/_renew', 'ApiDomain@renew');
 Route::put('domain/{name}/_restore', 'ApiDomain@restore');
-Route::get('domain/restore/_search', 'ApiDomain@restoreList');
+Route::post('domain/restore/_search', 'ApiDomain@restoreList');
 Route::post('domain/_transfer', 'ApiDomain@transfer');
 
 Route::get('user/{username}/{context}', 'ApiUser@info');

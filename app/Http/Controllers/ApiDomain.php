@@ -179,7 +179,7 @@ class ApiDomain extends Controller
                 $domain->setZonec($contact);
             }
 
-            if ( isset($request->generalRequestEmail) ) {
+            if ( isset($request->general_request_email) ) {
                 $domain->setGeneralRequestEmail($request->generalRequestEmail);
             }
 
