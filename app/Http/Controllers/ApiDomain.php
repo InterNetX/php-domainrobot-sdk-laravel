@@ -156,7 +156,7 @@ class ApiDomain extends Controller
                 $nameServers = [];
                 foreach ( $request->nameservers as $nameServer ) {
                     $nameServers[] = new NameServer([
-                        "name" => $nameServer
+                        'name' => $nameServer
                     ]);
                 }
 
@@ -241,7 +241,7 @@ class ApiDomain extends Controller
                     'operator' => $filter['operator']
                 ]);
             }
-
+            
             $query = new Query([
                 'filters' => $filters,
                 'view' => new QueryView([
