@@ -24,7 +24,7 @@ class ApiUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
+            'user' => 'required',
             'context' => 'required|integer'
         ];
     }
@@ -40,7 +40,7 @@ class ApiUserRequest extends FormRequest
     {
         $data = parent::all();
         
-        $data['username'] = $this->route('username');
+        $data['user'] = $this->route('user');
         $data['context'] = $this->route('context');
 
         return $data;

@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use ReflectionClass;
 use Illuminate\Support\ServiceProvider;
 use App\Logging\LogCallback;
 use Domainrobot\Domainrobot;
 use Domainrobot\Lib\DomainrobotAuth;
+use Domainrobot\Lib\DomainrobotHeaders;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->passthroughHeaders();
         $this->app->bind(
             'Domainrobot',
             function ($app) {
@@ -69,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
      * @param  string $user
      * @param  string $pass
      * @param  string $context
-     * @return string $csrOut
+     * @return object Domainrobot
      */
     protected function getDomainrobot($url, $user, $pass, $context) {
 
@@ -80,7 +84,8 @@ class AppServiceProvider extends ServiceProvider
                 'password' => $pass,
                 'context' => $context
             ]),
-            'logRequestCallback' => function ($method, $url, $requestOptions, $headers){
+            'headers' => $this->passthroughHeaders(),
+            'logRequestCallback' => function ($method, $url, $requestOptions, $headers) {
                 LogCallback::dailyRequest($method, $url, $requestOptions, $headers);
             },
             'logResponseCallback' => function ($url, $response, $statusCode, $exectime){
@@ -89,5 +94,49 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         return $domainrobot;
+    }
+
+    /**
+     * Pass the to the Application sent Headers through to 
+     * AutoDNS if they are valid Domainrobot Headers
+     *
+     * @return array $domainrobotConfigHeaders
+     */
+    protected function passthroughHeaders() {
+
+        $reflect = new ReflectionClass('Domainrobot\Lib\DomainrobotHeaders');
+        $validDomainrobotHeaders = $reflect->getConstants(); 
+
+        $requestHeaders = $this->app->request->headers->all();
+
+        $domainrobotConfigHeaders = [];
+        foreach ($requestHeaders as $headerKey => $headerValue) {
+
+            // Dont pass the user-agent and the 
+            // content-type Header through
+            if (
+                preg_match("/^user-agent$/i", $headerKey) ||
+                preg_match("/^content-type$/i", $headerKey)
+            ) {
+                continue;
+            }
+
+            // Search in the DomainRobotHeaders after 
+            // the given key of the sent Header
+            $regex = "/^" . $headerKey . "$/i";
+            $search = preg_grep($regex, $validDomainrobotHeaders);
+
+            // If the sent Header Key is an valid 
+            // Domainrobot Header assign it 
+            if (count($search) > 0) {
+                $searchKey = key($search);
+
+                $searchHeader = $reflect->getConstant($searchKey);
+
+                $domainrobotConfigHeaders[$searchHeader] = $headerValue[0];
+            }
+        }
+
+        return $domainrobotConfigHeaders;
     }
 }

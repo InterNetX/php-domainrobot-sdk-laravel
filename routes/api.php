@@ -32,8 +32,27 @@ Route::put('domain/{name}/_restore', 'ApiDomain@restore');
 Route::post('domain/restore/_search', 'ApiDomain@restoreList');
 Route::post('domain/_transfer', 'ApiDomain@transfer');
 
-Route::get('user/{username}/{context}', 'ApiUser@info');
+Route::post('user', 'ApiUser@create');
+Route::put('user/{user}/{context}/_lock', 'ApiUser@updateLock');
+Route::put('user/{user}/{context}/_unlock', 'ApiUser@updateUnlock');
+Route::post('user/{user}/{context}/copy', 'ApiUser@copy');
+Route::get('user/{user}/{context}/profile/{prefix}', 'ApiUser@profileInfo');
+Route::get('user/{user}/{context}/profile', 'ApiUser@profileInfo');
+Route::put('user/{user}/{context}/profile', 'ApiUser@profileUpdate');
+Route::get('user/{user}/{context}/serviceProfile/{prefix}', 'ApiUser@serviceProfileInfo');
+Route::get('user/{user}/{context}/serviceProfile', 'ApiUser@serviceProfileInfo');
+Route::put('user/{user}/{context}/serviceProfile', 'ApiUser@serviceProfileUpdate');
+Route::get('user/{user}/{context}', 'ApiUser@info');
+Route::put('user/{user}/{context}', 'ApiUser@update');
+Route::delete('user/{user}/{context}', 'ApiUser@delete');
 Route::post('user/_search', 'ApiUser@list');
+Route::get('user/billinglimit', 'ApiUser@billingObjectLimitInfo');
+Route::get('user/billingterm', 'ApiUser@billingObjectTermsInfo');
+
+Route::get('/OTPAuth', 'ApiUser2fa@tokenConfigInfo');
+Route::post('/OTPAuth', 'ApiUser2fa@tokenConfigCreate');
+Route::put('/user/_2fa', 'ApiUser2fa@tokenConfigActivate');
+Route::delete('/user/_2fa', 'ApiUser2fa@tokenConfigDelete');
 
 Route::post('sslcontact', 'ApiSslContact@create');
 Route::get('sslcontact/{id}', 'ApiSslContact@info');
