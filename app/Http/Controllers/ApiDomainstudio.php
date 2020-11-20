@@ -44,39 +44,41 @@ class ApiDomainstudio extends Controller
         $domainStudioSources = new DomainStudioSources();
 
         $domainStudioSources->setInitial(new DomainStudioSourceInitial([
-            'services' => [ 
-                DomainEnvelopeSearchService::WHOIS, 
+            'services' => [
+                DomainEnvelopeSearchService::WHOIS,
                 DomainEnvelopeSearchService::PRICE,
                 DomainEnvelopeSearchService::ESTIMATION
-            ] 
+            ]
         ]));
 
         $domainStudioSources->setPremium(new DomainStudioSourcePremium([
             'max' => 5,
-            'promoTlds' => [ 'rocks', 'shop' ],
-            'services' => [ 
-                DomainEnvelopeSearchService::WHOIS, 
+            'promoTlds' => ['rocks', 'shop'],
+            'services' => [
+                DomainEnvelopeSearchService::WHOIS,
                 DomainEnvelopeSearchService::PRICE,
                 DomainEnvelopeSearchService::ESTIMATION
             ],
-            'topTlds' => [ 'de', 'com', 'net' ]
+            'topTlds' => ['de', 'com', 'net']
         ]));
 
         $domainEnvelopeSearchRequest->setSources($domainStudioSources);
         $domainEnvelopeSearchRequest->setSearchToken($request->searchToken);
         $domainEnvelopeSearchRequest->setCurrency($request->currency);
 
+        if (isset($request->forceDnsCheck)) {
+            $domainEnvelopeSearchRequest->setForceDnsCheck($request->forceDnsCheck);
+        }
+
         try {
-
             $domainSuggestions = $domainrobot->domainStudio->search($domainEnvelopeSearchRequest);
-
-        } catch ( DomainrobotException $exception ) {
+        } catch (DomainrobotException $exception) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()
             );
         }
-        
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()

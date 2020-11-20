@@ -49,10 +49,10 @@ Route::post('user/_search', 'ApiUser@list');
 Route::get('user/billinglimit', 'ApiUser@billingObjectLimitInfo');
 Route::get('user/billingterm', 'ApiUser@billingObjectTermsInfo');
 
-Route::get('/OTPAuth', 'ApiUser2fa@tokenConfigInfo');
-Route::post('/OTPAuth', 'ApiUser2fa@tokenConfigCreate');
-Route::put('/user/_2fa', 'ApiUser2fa@tokenConfigActivate');
-Route::delete('/user/_2fa', 'ApiUser2fa@tokenConfigDelete');
+Route::get('OTPAuth', 'ApiUser2fa@tokenConfigInfo');
+Route::post('OTPAuth', 'ApiUser2fa@tokenConfigCreate');
+Route::put('user/_2fa', 'ApiUser2fa@tokenConfigActivate');
+Route::delete('user/_2fa', 'ApiUser2fa@tokenConfigDelete');
 
 Route::post('sslcontact', 'ApiSslContact@create');
 Route::get('sslcontact/{id}', 'ApiSslContact@info');
@@ -83,3 +83,6 @@ Route::get('whois/{domain}', 'ApiWhois@single');
 Route::post('whois', 'ApiWhois@multi');
 
 Route::patch('bulk/domain', 'ApiDomainBulk@update');
+
+Route::get('zone/{name}/{systemNameServer}', 'ApiZone@info');
+Route::post('zone/_search', 'ApiZone@list');

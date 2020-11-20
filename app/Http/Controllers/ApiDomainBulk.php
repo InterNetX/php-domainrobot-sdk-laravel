@@ -105,9 +105,7 @@ class ApiDomainBulk extends Controller
         $bulkDomainPatchRequest->setObjects($domains);
 
         try {
-
             $jsonResponseDataDomains = $domainrobot->domainBulk->update($bulkDomainPatchRequest);
-
         } catch ( DomainrobotException $exception ) {
             return response()->json(
                 $exception->getError(),
