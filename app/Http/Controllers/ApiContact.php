@@ -51,6 +51,11 @@ class ApiContact extends Controller
     {
         $domainrobot = app('Domainrobot');
 
+        $keys = [];
+        if ( isset($request->keys) ) {
+            $keys = $request->keys;
+        }
+
         try {
             // Domainrobot\Model\Contact
             $contact = new Contact();
@@ -81,7 +86,7 @@ class ApiContact extends Controller
             $contact->setNicRef([
                 new ContactReference([
                     'nic' => new NicMember([
-                        'label' => 'tld' // e.g. de,com,cloud etc.
+                        'label' => 'de' // e.g. de,com,cloud etc.
                     ])
                 ])
             ]);
@@ -98,7 +103,7 @@ class ApiContact extends Controller
             ]));
 
             // Domainrobot\Model\Contact
-            $newContact = $domainrobot->contact->create($contact);
+            $newContact = $domainrobot->contact->create($contact, $keys);
 
         } catch ( DomainrobotException $exception ) {
             return response()->json(

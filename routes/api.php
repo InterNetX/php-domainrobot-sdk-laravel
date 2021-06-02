@@ -86,3 +86,6 @@ Route::patch('bulk/domain', 'ApiDomainBulk@update');
 
 Route::get('zone/{name}/{systemNameServer}', 'ApiZone@info');
 Route::post('zone/_search', 'ApiZone@list');
+
+Route::get('poll', 'ApiPoll@info');
+Route::put('poll/{id}', 'ApiPoll@confirm');
