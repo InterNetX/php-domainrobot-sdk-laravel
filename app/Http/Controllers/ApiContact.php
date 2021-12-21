@@ -210,14 +210,6 @@ class ApiContact extends Controller
                 $contact->setPcode($request->pcode);
             }
 
-            if ( isset($request->fname) ) {
-                $contact->setFname($request->fname);
-            }
-
-            if ( isset($request->lname) ) {
-                $contact->setLname($request->lname);
-            }
-
             if ( isset($request->email) ) {
                 $contact->setEmail($request->email);
             }
