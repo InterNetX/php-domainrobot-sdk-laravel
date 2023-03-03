@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('redirect', 'ApiRedirect@create');
+Route::put('redirect/{source}', 'ApiRedirect@update');
+
+
 Route::post('contact', 'ApiContact@create');
 Route::get('contact/{id}', 'ApiContact@info');
 Route::put('contact/{id}', 'ApiContact@update');
@@ -85,6 +89,7 @@ Route::post('whois', 'ApiWhois@multi');
 Route::patch('bulk/domain', 'ApiDomainBulk@update');
 
 Route::get('zone/{name}/{systemNameServer}', 'ApiZone@info');
+Route::post('zone', 'ApiZone@create');
 Route::post('zone/_search', 'ApiZone@list');
 
 Route::get('poll', 'ApiPoll@info');

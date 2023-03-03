@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Domainrobot\Lib\DomainrobotException;
 use Domainrobot\Model\Redirect;
-use Illuminate\Http\Request;;
 
 class ApiRedirect extends Controller
 {
-    /**
-     * Creating a new redirect.
-     * https://help.internetx.com/display/APIXMLDE/Redirect+Create
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         $domainrobot = app('Domainrobot');
 
@@ -26,24 +20,58 @@ class ApiRedirect extends Controller
 
         try {
 
-            // Domainrobot\Model\Redirect
             $redirect = new Redirect();
 
+             // Set the source domain
             $redirect->setSource($request->source);
+
+            // Set the target path
             $redirect->setTarget($request->target);
-            $redirect->setType($request->type); // DOMAIN & EMAIL
-            $redirect->setMode($request->mode); // CATCHALL, FRAME, HTTP, HTTPS & SINGLE
 
-            // Domainrobot\Model\Redirect
-            $redirectObject = $domainrobot->redirect->create($redirect, $keys);
+            // Set type DOMAIN, EMAIL
+            $redirect->setType($request->type);
 
-        } catch ( DomainrobotException $exception ) {
+            // Set mode CATCHALL, FRAME, HTTP, HTTPS & SINGLE
+            $redirect->setMode($request->mode); 
+
+            // Set title
+            $redirect->setTitle($request->title);
+
+            $job = $domainrobot->redirect->create($redirect);
+
+        } catch (DomainrobotException $exception) {
             return response()->json(
                 $exception->getError(),
                 $exception->getStatusCode()
             );
         }
         
+      return response()->json(
+          $domainrobot::getLastDomainrobotResult()->getResult(),
+          $domainrobot::getLastDomainrobotResult()->getStatusCode()
+      );
+    }
+
+    public function update($source, Request $request)
+    {
+        $domainrobot = app('Domainrobot');
+
+        try {
+
+            $redirect = $domainrobot->redirect->info($request->source);
+
+            // Change title
+            $redirect->setTitle($request->title);
+
+            $domainrobot->redirect->update($redirect);
+
+        } catch (DomainrobotException $exception) {
+            return response()->json(
+                $exception->getError(),
+                $exception->getStatusCode()
+            );
+        }
+
         return response()->json(
             $domainrobot::getLastDomainrobotResult()->getResult(),
             $domainrobot::getLastDomainrobotResult()->getStatusCode()
